@@ -1,0 +1,67 @@
+import numpy as np
+matrix = np.array(
+    [
+        [".", ".", "3", "4", ".", ".", "6", ".", "."],
+        ["5", ".", ".", ".", "2", ".", ".", "3", "."],
+        [".", ".", ".", ".", "8", ".", ".", ".", "9"],
+        [".", "1", "7", ".", ".", ".", ".", ".", "."],
+        [".", ".", "4", ".", "6", "2", ".", ".", "."],
+        [".", ".", ".", ".", ".", "9", ".", ".", "."],
+        [".", "7", ".", ".", ".", ".", "5", ".", "8"],
+        ["9", ".", ".", "6", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", "4", ".", "1", ".", "7"]
+    ])
+
+def correct(matrix, row, column):
+    test = True
+    i = 0
+    while test == True and i < 9:
+        if matrix[i][column] == matrix[row][column] and i != row:
+            test = False
+        i += 1
+    i = 0
+    while test == True and i < 9:
+        if matrix[row][i] == matrix[row][column] and i != column:
+            test = False
+        i += 1
+    i = row - row % 3
+    j = column - column % 3
+    while test == True and i < row - row % 3 + 3 and j < column - column % 3 + 3:
+        if matrix[i][j] == matrix[row][column] and i != row and j != column:
+            test = False
+        if i == row - row % 3 + 2 and j < column - column % 3 + 3:
+            j += 1
+            i = row - row % 3 - 1
+        i += 1
+    return test
+
+
+def solve(matrix):
+    tofill = [""] * 81
+    k = 0
+    for i in range(9):
+        for j in range(9):
+            if matrix[i][j] == ".":
+                tofill[k] = str(i) + str(j)
+                k += 1
+    i = 0
+    while i < k:
+        n = 1
+        test = False
+        while test == False and i>-1:
+            matrix[int(tofill[i][0])][int(tofill[i][1])] = str(n)
+            if correct(matrix, int(tofill[i][0]), int(tofill[i][1])) and n <= 9:
+                test = True
+            elif (n == 9 or n == 10) and test == False:
+                matrix[int(tofill[i][0])][int(tofill[i][1])] = "."
+                i-= 1
+                if i==-1:
+                    return "the given suduko is not solvable"
+                n = int(matrix[int(tofill[i][0])][int(tofill[i][1])]) + 1
+            else:
+                n += 1
+        i += 1
+    return matrix
+
+
+print(solve(matrix))
