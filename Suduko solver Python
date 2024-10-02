@@ -52,7 +52,7 @@ def solve(matrix):
             matrix[int(tofill[i][0])][int(tofill[i][1])] = str(n)
             if correct(matrix, int(tofill[i][0]), int(tofill[i][1])) and n <= 9:
                 test = True
-            elif (n == 9 or n == 10) and test == False:
+            elif (n == 10) and test == False:
                 matrix[int(tofill[i][0])][int(tofill[i][1])] = "."
                 i-= 1
                 if i==-1:
